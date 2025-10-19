@@ -11,6 +11,10 @@ public class calculator {
             return 0;
         }
 
+        if (text.contains("\\n")) {
+            text = text.replace("\\n", "\n");
+        }
+
         String delimiter = "[,:]";
         String numbersText = text;
 
