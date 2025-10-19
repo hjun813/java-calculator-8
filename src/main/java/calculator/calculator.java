@@ -33,9 +33,6 @@ public class calculator {
     
     private int parseAndValidate(String numStr) {
         int num = Integer.parseInt(numStr);
-        if (num < 0) {
-            throw new IllegalArgumentException("음수는 입력할 수 없습니다.");
-        }
         return num;
     }
 
