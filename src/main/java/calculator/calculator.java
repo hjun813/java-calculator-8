@@ -1,7 +1,5 @@
 package calculator;
 
-
-import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
@@ -17,31 +15,27 @@ public class calculator {
         String numbersText = text;
 
         if (text.startsWith("//")) {
-            Matcher matcher = Pattern.compile("//(.)\\\\n(.*)").matcher(text);
+            Matcher matcher = Pattern.compile("//(.)\\n(.*)").matcher(text);
             if (matcher.find()) {
-                String customDelimiter = Pattern.quote(matcher.group(1)); 
-                delimiter = customDelimiter + "|" + delimiter; 
+                delimiter = Pattern.quote(matcher.group(1));
                 numbersText = matcher.group(2);
             }
         }
 
-        
-        return splitToNumbers(numbersText, delimiter)
-                .mapToInt(this::parseAndValidate)
-                .sum();
-    }
-
-    
-    private int parseAndValidate(String numStr) {
-        int num = Integer.parseInt(numStr);
-        return num;
-    }
-
-    
-    private Stream<String> splitToNumbers(String text, String delimiter) {
-        if (text.isEmpty()) {
-            return Stream.empty();
-        }
-        return Arrays.stream(text.split(delimiter));
+        return Stream.of(numbersText.split(delimiter))
+            .map(String::trim)
+            .mapToInt(num -> {
+                int n;
+                try {
+                    n = Integer.parseInt(num);
+                } catch (NumberFormatException e) {
+                    throw new IllegalArgumentException("잘못된 숫자 형식: " + num);
+                }
+                if (n < 0) {
+                    throw new IllegalArgumentException("음수는 허용되지 않습니다: " + n);
+                }
+                return n;
+            })
+            .sum();
     }
 }
