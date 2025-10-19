@@ -19,7 +19,8 @@ public class calculator {
         if (text.startsWith("//")) {
             Matcher matcher = Pattern.compile("//(.)\\\\n(.*)").matcher(text);
             if (matcher.find()) {
-                delimiter = Pattern.quote(matcher.group(1));
+                String customDelimiter = Pattern.quote(matcher.group(1)); 
+                delimiter = customDelimiter + "|" + delimiter; 
                 numbersText = matcher.group(2);
             }
         }
